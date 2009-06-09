@@ -2,8 +2,6 @@
 
 (in-package "editor")
 
-(setq *xlisp-popup-vertical* t)
-
 (xlisp-profile :name "CommonLisp"
 	       :exe "sbcl.bat"
 	       :mac "(macroexpand~:[-1~;~] '~A)"
@@ -30,6 +28,9 @@
 	  #'(lambda ()
 	      (ac-mode-on)
 	      (toggle-paren t)))
+
+(define-key *xlisp-mode-map* '(#\C-c #\C-x) 'xlisp-macroexpand-1)
+(define-key *xlisp-mode-map* '(#\C-c #\x) 'xlisp-macroexpand)
 
 (in-package "user")
 (global-set-key '(#\C-x #\C-l) 'xlisp-set-mode)
