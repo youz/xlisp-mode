@@ -128,7 +128,6 @@ lapse001 2008-03-27 00:45 とりあえず動くよ。
  '(*xlisp-profile*
    *xlisp-mode-map*
    *xlisp-mode-hook*
-   *xlisp-popup-vertical*
    xlisp-mode
    xlisp-profile
    xlisp-send-last-sexp
@@ -153,7 +152,6 @@ lapse001 2008-03-27 00:45 とりあえず動くよ。
 
 (defvar *xlisp-profile* nil)
 (defvar *xlisp-mode-hook* nil)
-(defvar *xlisp-popup-vertical* nil)
 
 #|
 (define-key ctl-x-map #\LFD 'xlisp-send-last-sexp)
@@ -209,7 +207,7 @@ lapse001 2008-03-27 00:45 とりあえず動くよ。
 	 pbuff)
     (setq pbuff (execute-subprocess (format nil "\"~a\" ~a" exe (or1 cmd ""))
 			t (format nil "*~A*" name) env d))
-    (pop-to-buffer pbuff t *xlisp-popup-vertical*)
+    (pop-to-buffer pbuff t)
     (set-buffer pbuff)
     ;(make-local-variable 'keyword-hash-table)
     ;(setf keyword-hash-table (load-keyword-file name t))
@@ -303,7 +301,7 @@ lapse001 2008-03-27 00:45 とりあえず動くよ。
        str)
       (let ((pbuff (process-buffer xlisp-bound-proc)))
 	(when pbuff
-	  (pop-to-buffer pbuff t *xlisp-popup-vertical*)
+	  (pop-to-buffer pbuff t)
 	  (set-buffer pbuff)
 	  (sit-for 0.3)
 	  (goto-char (point-max)))))
@@ -327,7 +325,6 @@ lapse001 2008-03-27 00:45 とりあえず動くよ。
 	(compile-regexp-keyword-list
 	 '(("(" t (:color 14))
 	   (")" t (:color 14)))))
-
 ;  (make-local-variable 'xlisp-mode-map)
 ;  (setq xlisp-mode-map (copy-keymap *xlisp-mode-map*))
   (use-keymap *xlisp-mode-map*)
