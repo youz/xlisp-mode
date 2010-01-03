@@ -2,8 +2,8 @@
 (defun xlisp-mode-version ()
   (interactive)
   (if (interactive-p)
-      (message "xlisp-mode ~A on 2009-06-09" (xlisp-mode-version))
-    "mod-002"))
+      (message "xlisp-mode ~A on 2009-11-25" (xlisp-mode-version))
+    "mod-003"))
 
 #| xlisp-mode modver. by Y.Ushiki
 
