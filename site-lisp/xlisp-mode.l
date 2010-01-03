@@ -8,6 +8,14 @@
 #| xlisp-mode modver. by Y.Ushiki
 
 History
+== mod-003  2009-11-25
+=== 変更点
+* xlisp-profile
+  * encodingパラメータ追加
+
+* toplevelでsend-current-formやmacroexpandを実行すると
+  無限ループに陥いるバグを修正
+
 
 == mod-002  2009-06-09
 === 変更点
@@ -128,6 +136,7 @@ lapse001 2008-03-27 00:45 とりあえず動くよ。
  '(*xlisp-profile*
    *xlisp-mode-map*
    *xlisp-mode-hook*
+   *xlisp-popup-vertical*
    xlisp-mode
    xlisp-profile
    xlisp-send-last-sexp
@@ -152,6 +161,7 @@ lapse001 2008-03-27 00:45 とりあえず動くよ。
 
 (defvar *xlisp-profile* nil)
 (defvar *xlisp-mode-hook* nil)
+(defvar *xlisp-popup-vertical* nil)
 
 #|
 (define-key ctl-x-map #\LFD 'xlisp-send-last-sexp)
@@ -172,11 +182,12 @@ lapse001 2008-03-27 00:45 とりあえず動くよ。
 
 
 ;; functions
-(defun xlisp-profile (&key name exe cmd dir env run-char auto-mode mac hook)
+(defun xlisp-profile (&key name exe cmd dir env encoding run-char auto-mode mac hook)
   (when (and (stringp name) (string/= name ""))
     (setq *xlisp-profile* (delete name *xlisp-profile* :test 'equal :key 'cadr))
     (let* ((mode-sym (intern (format nil "xlisp-~(~A~)-mode" name)))
-	   (prf (list :name name :exe exe :cmd cmd :dir dir :env env
+	   (prf (list :name name :exe exe :cmd cmd :dir dir
+		      :env env :encoding (or encoding *encoding-sjis*)
 		      :hook hook :auto-mode auto-mode
 		      :mac mac
 		      :mode mode-sym
@@ -202,16 +213,20 @@ lapse001 2008-03-27 00:45 とりあえず動くよ。
       (pop-to-buffer sbuff t)
       (setq xlisp-bound-proc proc))))
 
-(defun xlisp-call-new-proc (&key name exe cmd dir env run-char)
+(defun xlisp-call-new-proc (&key name exe cmd dir env run-char encoding)
   (let* ((d (or1 dir (directory-namestring (get-buffer-file-name))))
-	 pbuff)
-    (setq pbuff (execute-subprocess (format nil "\"~a\" ~a" exe (or1 cmd ""))
-			t (format nil "*~A*" name) env d))
-    (pop-to-buffer pbuff t)
+	 (cmd (format nil "\"~a\" ~a" exe (or cmd "")))
+	 pbuff bproc)
+    (setq pbuff (execute-subprocess cmd t (format nil "*~A*" name) env d)
+	  bproc (buffer-process pbuff))
+    (set-process-incode bproc encoding)
+    (set-process-outcode bproc encoding)
+    (pop-to-buffer pbuff t *xlisp-popup-vertical*)
     (set-buffer pbuff)
-    ;(make-local-variable 'keyword-hash-table)
-    ;(setf keyword-hash-table (load-keyword-file name t))
-    (buffer-process)))
+    (change-fileio-encoding encoding)
+    (make-local-variable 'keyword-hash-table)
+    (setf keyword-hash-table (load-keyword-file name t))
+    bproc))
 
 
 ;; get positions
@@ -226,13 +241,16 @@ lapse001 2008-03-27 00:45 とりあえず動くよ。
 (defun xlisp-point-current-form (buff)
   (save-excursion
     (set-buffer buff)
-    (while (string/= "(" (buffer-substring (1- (point)) (point)))
+    (while (and (not (bobp))
+		(string/= "(" (buffer-substring (1- (point)) (point))))
       (backward-sexp))
-    (let* ((start (and (backward-char) (point)))
-	   (end (and (forward-sexp) (point))))
-      (if (and start end)
-	  (values start end)
-	(error "parse error")))))
+    (if (bobp)
+	(values (point-min) (point-max))
+      (let* ((start (and (backward-char) (point)))
+	     (end (and (forward-sexp) (point))))
+	(if (and start end)
+	    (values start end)
+	  (error "parse error"))))))
 
 
 ;; commands
@@ -301,7 +319,7 @@ lapse001 2008-03-27 00:45 とりあえず動くよ。
        str)
       (let ((pbuff (process-buffer xlisp-bound-proc)))
 	(when pbuff
-	  (pop-to-buffer pbuff t)
+	  (pop-to-buffer pbuff t *xlisp-popup-vertical*)
 	  (set-buffer pbuff)
 	  (sit-for 0.3)
 	  (goto-char (point-max)))))
@@ -325,12 +343,12 @@ lapse001 2008-03-27 00:45 とりあえず動くよ。
 	(compile-regexp-keyword-list
 	 '(("(" t (:color 14))
 	   (")" t (:color 14)))))
+
 ;  (make-local-variable 'xlisp-mode-map)
 ;  (setq xlisp-mode-map (copy-keymap *xlisp-mode-map*))
   (use-keymap *xlisp-mode-map*)
   (run-hooks '*xlisp-mode-hook*)
   (when #1=(getf profile :hook)
-    (msgbox "~A" #1#)
     (run-hooks #1#)))
 
 

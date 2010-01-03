@@ -2,6 +2,8 @@
 
 (in-package "editor")
 
+(setq *xlisp-popup-vertical* t)
+
 (xlisp-profile :name "CommonLisp"
 	       :exe "sbcl.bat"
 	       :mac "(macroexpand~:[-1~;~] '~A)"
@@ -10,6 +12,7 @@
 (xlisp-profile :name "Scheme"
 	       :exe "gosh.exe"
 	       :cmd "-i -u pp"
+	       :encoding *encoding-utf8n*
 	       :mac "(pretty-print (macroexpand~:[-1~;~] '~A))"
 	       :auto-mode "\\.scm$")
 
@@ -28,9 +31,6 @@
 	  #'(lambda ()
 	      (ac-mode-on)
 	      (toggle-paren t)))
-
-(define-key *xlisp-mode-map* '(#\C-c #\C-x) 'xlisp-macroexpand-1)
-(define-key *xlisp-mode-map* '(#\C-c #\x) 'xlisp-macroexpand)
 
 (in-package "user")
 (global-set-key '(#\C-x #\C-l) 'xlisp-set-mode)
