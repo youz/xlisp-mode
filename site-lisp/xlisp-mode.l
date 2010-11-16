@@ -1,131 +1,13 @@
+;;; -*- mode:Lisp; package:editor -*-
+
 (provide "xlisp-mode")
 (defun xlisp-mode-version ()
   (interactive)
   (if (interactive-p)
-      (message "xlisp-mode ~A on 2009-11-25" (xlisp-mode-version))
+      (message "xlisp-mode ~A on 2010-10-15" (xlisp-mode-version))
     "mod-003"))
 
-#| xlisp-mode modver. by Y.Ushiki
 
-History
-== mod-003  2009-11-25
-=== 変更点
-* xlisp-profile
-  * encodingパラメータ追加
-
-* toplevelでsend-current-formやmacroexpandを実行すると
-  無限ループに陥いるバグを修正
-
-
-== mod-002  2009-06-09
-=== 変更点
-* xlisp-profile
-  * macパラメータ追加 (macroexpand用フォーマット)
-例:
-  :mac "(macroexpand~:[-1~;~] '~A)"  ;; cl用
-
-+ xlisp-send-current-form
-+ xlisp-macroexpand
-+ xlisp-macroexpand-1
-
-デフォルトキーバインドは
-  [C-c C-c] xlisp-send-current-form
-  [C-c M-m] xlisp-macroexpand
-  [C-c C-m] xlisp-macroexpand-1
-
-
-== mod-001  2009-06-05
-=== 変更点
-* プロファイルをplistに
-* *xlisp-mode-hook*を追加
-* 各コマンドをexport
-* キーマップ *xlisp-mode-map* 作成 & バインド変更
-   C-j      xlisp-send-last-sexp
-  [C-c C-e] xlisp-send-last-sexp
-  [C-c C-j] xlisp-send-line
-  [C-c C-r] xlisp-send-region
-  [C-c C-l] xlisp-send-buffer
-
-* xlisp-profile
-  * auto-modeパラメータ追加
-  * プロファイルごとにメジャーモードコマンドを生成
-例:
-(xlisp-profile :name "Scheme"
-	       :exe "gosh.exe"
-	       :cmd "-i -u pp"
-	       :auto-mode "\\.scm$")
-  を実行すると xlisp-scheme-mode が使用可能になり、
-  *auto-mode-alist*に '("\\.scm$" . xlisp-scheme-mode) を追加する
-
-* buffer-modeをxlisp-modeからxlisp-profileで生成したシンボル(xlisp-hoge-mode)に変更
-
-+ xlisp-send-string (xlisp-send-regionから分離)
-+ xlisp-set-mode   ヘッダに関係なくモードを強制変更
-+ xlisp-set-header ヘッダを挿入してxlisp-modeを適用
-
-|#
-
-
-#| xlisp-mode lapse001 for xyzzy-0.2.2.235 or over version
-
- Copyright (C) 2008 knenet
- All rights reserved.
- <kneneglect_std@yahoo.co.jp>
-
-他のlispの評価器と連携してみる。
-別バッファのサブプロセスとして走らせる。
-
-使い方 -*- mode:lisp -*-
-
-このファイルをsite-lispにでも置いておく。
-
-.xyzzyとかに以下を書く。
-
-(require "xlisp-mode") ; 準備する。
-(xlisp-profile "Arc" ; モード名。
-	       :exe "c:/MzScheme/MzScheme.exe" ; 評価器位置。
-	       :cmd "-m -f as.scm" ; パラメータ。
-	       :dir "c:/MzScheme/" ; 実行ディレクトリ（デフォルトはファイル位置）
-	       :env nil ; 環境変数。
-	       :run-char #\LFD) ; 改行文字（デフォルトは#\LFD）
-;プロファイルはいくつでもＯＫ。ただし、モード名が同じものは上書きされる。
-
-モード名と同じ名前のキーワードリストをetc-pathに置く。
-モード変更したいバッファに以下を書いておく（Arcの場合）。
-
-;; -*- mOdE:xLiSp;ArC -*-
-
-モード名が変わっていたら成功。
-lispmodeを直接読み込んでいるので、プロファイルがなければlisp-modeになる。
-
-追加機能は次のコマンド。
-
-C-x LFD S式を評価器に送る。
-C-x F5 バッファを評価器に送る。
-C-x C-- 1行を評価器に送る。
-
-コマンドを使って、評価器が呼び出されているのに反応がない場合は、改行文字を変えてみると良い。
-例えば、GNU CLISPは#\RETで評価を始めるようだ。
-
-ファイルを閉じるときに評価器が残っていれば、そのバッファを表示してプロセスを終了する。
-
-履歴
-
-lapse001 2008-03-27 00:45 とりあえず動くよ。
-
-権利・責任関係
-
-日本国の著作権法が適用される範囲でknenetが著作権を持つ。
-細かく見ると、どこにも主張するべき点がなさそうだけれども。
-ライセンスは以下の通り。MIT Licenseと同等であると考えて良い。
-
-配布、改造、編纂等の再利用を許可する。二次創作物の権利は一切主張しない（し得ない）。
-ただし、ファイルのバージョンや作成・配布元が区別できるように名前や表示を考慮すること。
-後に情報元がたどれるように、著作権表示を明記すること。
-何人も、このプログラムによって生じた損益について責任を持たない。
-このプログラムを使用する者は、同時にこのライセンスを許諾しているものとみなす。
-
-|#
 
 ;; ritual
 (eval-when (:compile-toplevel :load-toplevel :execute)
@@ -133,7 +15,7 @@ lapse001 2008-03-27 00:45 とりあえず動くよ。
 (in-package "editor")
 
 (export
- '(*xlisp-profile*
+ '(*xlisp-profiles*
    *xlisp-mode-map*
    *xlisp-mode-hook*
    *xlisp-popup-vertical*
@@ -159,7 +41,7 @@ lapse001 2008-03-27 00:45 とりあえず動くよ。
   `(if ,exist ,exist ,otherwise))
 )
 
-(defvar *xlisp-profile* nil)
+(defvar *xlisp-profiles* nil)
 (defvar *xlisp-mode-hook* nil)
 (defvar *xlisp-popup-vertical* nil)
 
@@ -176,23 +58,29 @@ lapse001 2008-03-27 00:45 とりあえず動くよ。
 (define-key *xlisp-mode-map* '(#\C-c #\C-c) 'xlisp-send-current-form)
 (define-key *xlisp-mode-map* '(#\C-c #\C-j) 'xlisp-send-line)
 (define-key *xlisp-mode-map* '(#\C-c #\C-r) 'xlisp-send-region)
-(define-key *xlisp-mode-map* '(#\C-c #\C-l) 'xlisp-send-buffer)
+(define-key *xlisp-mode-map* '(#\C-c #\C-z) 'xlisp-send-buffer)
+(define-key *xlisp-mode-map* '(#\C-c #\C-l) 'xlisp-load-file)
 (define-key *xlisp-mode-map* '(#\C-c #\M-m) 'xlisp-macroexpand)
 (define-key *xlisp-mode-map* '(#\C-c #\C-m) 'xlisp-macroexpand-1)
+(define-key *xlisp-mode-map* '(#\C-c #\C-x) 'xlisp-run-repl)
 
+(defvar *xlisp-repl-map* (copy-keymap ed::*command-output-mode-map*))
+(define-key *xlisp-repl-map* #\RET 'xlisp-repl-send-input)
 
-;; functions
-(defun xlisp-profile (&key name exe cmd dir env encoding run-char auto-mode mac hook)
+;; profile
+(defun xlisp-profile (&key name exe cmd dir env encoding
+			   run-char auto-mode macex loadfile hook)
   (when (and (stringp name) (string/= name ""))
-    (setq *xlisp-profile* (delete name *xlisp-profile* :test 'equal :key 'cadr))
+    (setq *xlisp-profiles* (delete name *xlisp-profiles* :test 'equal :key 'cadr))
     (let* ((mode-sym (intern (format nil "xlisp-~(~A~)-mode" name)))
 	   (prf (list :name name :exe exe :cmd cmd :dir dir
 		      :env env :encoding (or encoding *encoding-sjis*)
 		      :hook hook :auto-mode auto-mode
-		      :mac mac
+		      :macex macex
+		      :loadfile loadfile
 		      :mode mode-sym
 		      :run-char (or run-char #\LFD))))
-      (push prf *xlisp-profile*)
+      (push prf *xlisp-profiles*)
       (si:*fset mode-sym
 		`(lambda ()
 		   (interactive)
@@ -204,6 +92,11 @@ lapse001 2008-03-27 00:45 とりあえず動くよ。
       )))
 
 
+;;; repl buffer
+(defun xlisp-run-repl ()
+  (interactive)
+  (xlisp-bind-proc))
+
 (defun xlisp-bind-proc ()
   (let ((sbuff (selected-buffer))
 	proc)
@@ -213,17 +106,21 @@ lapse001 2008-03-27 00:45 とりあえず動くよ。
       (pop-to-buffer sbuff t)
       (setq xlisp-bound-proc proc))))
 
+(defun xlisp-repl-send-input ()
+  (interactive)
+  (ed:shell-send-input))
+
 (defun xlisp-call-new-proc (&key name exe cmd dir env run-char encoding)
   (let* ((d (or1 dir (directory-namestring (get-buffer-file-name))))
 	 (cmd (format nil "\"~a\" ~a" exe (or cmd "")))
-	 pbuff bproc)
-    (setq pbuff (execute-subprocess cmd t (format nil "*~A*" name) env d)
-	  bproc (buffer-process pbuff))
+	 (pbuff (execute-subprocess cmd t (format nil "*~A*" name) env d))
+	 (bproc (buffer-process pbuff)))
+    (set-buffer pbuff)
+    (use-keymap *xlisp-repl-map*)
+    (change-fileio-encoding encoding)
     (set-process-incode bproc encoding)
     (set-process-outcode bproc encoding)
     (pop-to-buffer pbuff t *xlisp-popup-vertical*)
-    (set-buffer pbuff)
-    (change-fileio-encoding encoding)
     (make-local-variable 'keyword-hash-table)
     (setf keyword-hash-table (load-keyword-file name t))
     bproc))
@@ -241,11 +138,11 @@ lapse001 2008-03-27 00:45 とりあえず動くよ。
 (defun xlisp-point-current-form (buff)
   (save-excursion
     (set-buffer buff)
-    (while (and (not (bobp))
-		(string/= "(" (buffer-substring (1- (point)) (point))))
+    (while (not (or (string= "(" (buffer-substring (1- (point)) (point)))
+		    (= (point) (point-min))))
       (backward-sexp))
-    (if (bobp)
-	(values (point-min) (point-max))
+    (if (= (point) (point-min))
+	(xlisp-send-region (point-min) (point-max))
       (let* ((start (and (backward-char) (point)))
 	     (end (and (forward-sexp) (point))))
 	(if (and start end)
@@ -253,12 +150,13 @@ lapse001 2008-03-27 00:45 とりあえず動くよ。
 	  (error "parse error"))))))
 
 
-;; commands
+;;; commands
 (defun xlisp-send-last-sexp ()
   (interactive)
   (let ((buff (selected-buffer)))
     (multiple-value-call #'xlisp-send-region (xlisp-point-last-sexp buff))
     (pop-to-buffer buff)))
+
 
 (defun xlisp-send-current-form ()
   (interactive)
@@ -266,9 +164,11 @@ lapse001 2008-03-27 00:45 とりあえず動くよ。
     (multiple-value-call #'xlisp-send-region (xlisp-point-current-form buff))
     (pop-to-buffer buff)))
 
+
 (defun xlisp-send-buffer ()
   (interactive)
   (xlisp-send-region (point-min) (point-max)))
+
 
 (defun xlisp-send-line ()
   (interactive)
@@ -279,6 +179,7 @@ lapse001 2008-03-27 00:45 とりあえず動くよ。
     (pop-to-buffer buff)
     (forward-char)))
 
+
 (defun xlisp-send-region (from to)
   (interactive "r")
   (if (> from to) (rotatef from to))
@@ -288,23 +189,34 @@ lapse001 2008-03-27 00:45 とりあえず動くよ。
       (format nil "~A~A"
 	      (buffer-substring from to)
 	      (getf xlisp-buff-profile :run-char))
-      ";.*\n" ""))
+      ";[^\"]*\n" ""))
     (when (interactive-p)
       (pop-to-buffer buff))))
 
-(defun xlisp-macroexpand (&optional (expand-all t))
+
+(defun xlisp-macroexpand (&optional expand-1)
   (interactive)
   (when (and (boundp 'xlisp-buff-profile)
-	     #1=(getf xlisp-buff-profile :mac))
+	     #1=(getf xlisp-buff-profile :macex))
     (let ((buff (selected-buffer)))
       (multiple-value-bind (from to) (xlisp-point-current-form buff)
 	(xlisp-send-string
-	 (format nil "~@?~%" #1# expand-all (buffer-substring from to))))
+	 (format nil "~@?~%" #1# expand-1 (buffer-substring from to))))
       (pop-to-buffer buff))))
+
 
 (defun xlisp-macroexpand-1 ()
   (interactive)
-  (xlisp-macroexpand nil))
+  (xlisp-macroexpand t))
+
+(defun xlisp-load-file ()
+  (interactive)
+  (when (and (boundp 'xlisp-buff-profile)
+	     #1=(getf xlisp-buff-profile :loadfile))
+    (let ((file (get-buffer-file-name)))
+      (xlisp-send-string
+       (format nil "~@?~%" #1# file)))))
+
 
 (defun xlisp-send-string (str)
   (interactive "sExpression: ")
@@ -361,7 +273,7 @@ lapse001 2008-03-27 00:45 とりあえず動くよ。
     (when (scan-buffer "-\\*-.*xlisp[ \t]*;+[ \t]*\\(.*\\)-\\*-"
 		       :case-fold t :regexp t)
       (let ((params (match-string 1)))
-	(dolist (prf *xlisp-profile*)
+	(dolist (prf *xlisp-profiles*)
 	  (when (string-matchp (getf prf :name) params)
 	    (return (xlisp-setup prf)))))))
   (when (string-equal mode-name "lisp")
@@ -392,7 +304,7 @@ lapse001 2008-03-27 00:45 とりあえず動くよ。
 
 (defun xlisp-set-mode (name)
   (interactive (list (xlisp-mode-name-completion)))
-  (let ((prf (find name *xlisp-profile* :test #'string-equal :key #'cadr)))
+  (let ((prf (find name *xlisp-profiles* :test #'string-equal :key #'cadr)))
     (funcall (getf prf :mode))))
 
 (defun xlisp-set-header (name)
@@ -405,7 +317,7 @@ lapse001 2008-03-27 00:45 とりあえず動くよ。
 
 (defun xlisp-mode-name-completion (&optional (default "CommonLisp"))
   (completing-read "xlisp-mode: "
-		   (mapcar #'cadr *xlisp-profile*)
+		   (mapcar #'cadr *xlisp-profiles*)
 		   :default default
 		   :case-fold t
 		   :must-match t))
