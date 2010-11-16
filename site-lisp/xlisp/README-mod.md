@@ -46,9 +46,8 @@ knenet <kneneglect_std@yahoo.co.jp>
     [C-c C-r] xlisp-send-region  
     [C-c C-z] xlisp-send-buffer
 
-* xlisp-profile
-** (new) auto-modeパラメータ
-** プロファイルごとにメジャーモードコマンドを生成  
+* (new) xlisp-profile auto-modeパラメータ
+* プロファイルごとにメジャーモードコマンドを生成  
     例:
 
         (xlisp-profile :name "Scheme"
