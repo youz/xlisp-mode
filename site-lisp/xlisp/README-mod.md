@@ -2,14 +2,10 @@
 
 
 ## Author
-2009-2010  
-Yousuke Ushiki <citrus.yubeshi@gmail.com>
+Copyright (C) 2008 knenet (<kneneglect_std@yahoo.co.jp>) All rights reserved.  
+Copyright (C) 2009-2010 Yousuke Ushiki (<citrus.yubeshi@gmail.com>) All rights reserved.
 
-2008  
-knenet <kneneglect_std@yahoo.co.jp>  
-
-
-## Copyright
+## License
 オリジナル版に準ずる。(README.txt参照)
 
 
