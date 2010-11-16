@@ -4,57 +4,57 @@ xlisp-mode lapse001 for xyzzy-0.2.2.235 or over version
  All rights reserved.
  <kneneglect_std@yahoo.co.jp>
 
-����lisp�̕]����ƘA�g���Ă݂�B
-�ʃo�b�t�@�̃T�u�v���Z�X�Ƃ��đ��点��B
+他のlispの評価器と連携してみる。
+別バッファのサブプロセスとして走らせる。
 
-�g���� -*- mode:lisp -*-
+使い方 -*- mode:lisp -*-
 
-���̃t�@�C����site-lisp�ɂł��u���Ă����B
+このファイルをsite-lispにでも置いておく。
 
-.xyzzy�Ƃ��Ɉȉ��������B
+.xyzzyとかに以下を書く。
 
-(require "xlisp-mode") ; ��������B
-(xlisp-profile "Arc" ; ���[�h���B
-	       :exe "c:/MzScheme/MzScheme.exe" ; �]����ʒu�B
-	       :cmd "-m -f as.scm" ; �p�����[�^�B
-	       :dir "c:/MzScheme/" ; ���s�f�B���N�g���i�f�t�H���g�̓t�@�C���ʒu�j
-	       :env nil ; ���ϐ��B
-	       :run-char #\LFD) ; ���s�����i�f�t�H���g��#\LFD�j
-;�v���t�@�C���͂����ł��n�j�B�������A���[�h�����������̂͏㏑�������B
+(require "xlisp-mode") ; 準備する。
+(xlisp-profile "Arc" ; モード名。
+	       :exe "c:/MzScheme/MzScheme.exe" ; 評価器位置。
+	       :cmd "-m -f as.scm" ; パラメータ。
+	       :dir "c:/MzScheme/" ; 実行ディレクトリ（デフォルトはファイル位置）
+	       :env nil ; 環境変数。
+	       :run-char #\LFD) ; 改行文字（デフォルトは#\LFD）
+;プロファイルはいくつでもＯＫ。ただし、モード名が同じものは上書きされる。
 
-���[�h���Ɠ������O�̃L�[���[�h���X�g��etc-path�ɒu���B
-���[�h�ύX�������o�b�t�@�Ɉȉ��������Ă����iArc�̏ꍇ�j�B
+モード名と同じ名前のキーワードリストをetc-pathに置く。
+モード変更したいバッファに以下を書いておく（Arcの場合）。
 
 ;; -*- mOdE:xLiSp;ArC -*-
 
-���[�h�����ς���Ă����琬���B
-lispmode�𒼐ړǂݍ���ł���̂ŁA�v���t�@�C�����Ȃ����lisp-mode�ɂȂ�B
+モード名が変わっていたら成功。
+lispmodeを直接読み込んでいるので、プロファイルがなければlisp-modeになる。
 
-�ǉ��@�\�͎��̃R�}���h�B
+追加機能は次のコマンド。
 
-C-x LFD S����]����ɑ���B
-C-x F5 �o�b�t�@��]����ɑ���B
-C-x C-- 1�s��]����ɑ���B
+C-x LFD S式を評価器に送る。
+C-x F5 バッファを評価器に送る。
+C-x C-- 1行を評価器に送る。
 
-�R�}���h���g���āA�]���킪�Ăяo����Ă���̂ɔ������Ȃ��ꍇ�́A���s������ς��Ă݂�Ɨǂ��B
-�Ⴆ�΁AGNU CLISP��#\RET�ŕ]�����n�߂�悤���B
+コマンドを使って、評価器が呼び出されているのに反応がない場合は、改行文字を変えてみると良い。
+例えば、GNU CLISPは#\RETで評価を始めるようだ。
 
-�t�@�C�������Ƃ��ɕ]���킪�c���Ă���΁A���̃o�b�t�@��\�����ăv���Z�X���I������B
+ファイルを閉じるときに評価器が残っていれば、そのバッファを表示してプロセスを終了する。
 
-����
+履歴
 
-lapse001 2008-03-27 00:45 �Ƃ肠����������B
+lapse001 2008-03-27 00:45 とりあえず動くよ。
 
-�����E�ӔC�֌W
+権利・責任関係
 
-���{���̒��쌠�@���K�p�����͈͂�knenet�����쌠�����B
-�ׂ�������ƁA�ǂ��ɂ��咣����ׂ��_���Ȃ�����������ǂ��B
-���C�Z���X�͈ȉ��̒ʂ�BMIT License�Ɠ����ł���ƍl���ėǂ��B
+日本国の著作権法が適用される範囲でknenetが著作権を持つ。
+細かく見ると、どこにも主張するべき点がなさそうだけれども。
+ライセンスは以下の通り。MIT Licenseと同等であると考えて良い。
 
-�z�z�A�����A�Ҏ[���̍ė��p��������B�񎟑n�앨�̌����͈�؎咣���Ȃ��i�����Ȃ��j�B
-�������A�t�@�C���̃o�[�W������쐬�E�z�z������ʂł���悤�ɖ��O��\�����l�����邱�ƁB
-��ɏ�񌳂����ǂ��悤�ɁA���쌠�\���𖾋L���邱�ƁB
-���l���A���̃v���O�����ɂ���Đ��������v�ɂ��ĐӔC�������Ȃ��B
-���̃v���O�������g�p����҂́A�����ɂ��̃��C�Z���X���������Ă�����̂Ƃ݂Ȃ��B
+配布、改造、編纂等の再利用を許可する。二次創作物の権利は一切主張しない（し得ない）。
+ただし、ファイルのバージョンや作成・配布元が区別できるように名前や表示を考慮すること。
+後に情報元がたどれるように、著作権表示を明記すること。
+何人も、このプログラムによって生じた損益について責任を持たない。
+このプログラムを使用する者は、同時にこのライセンスを許諾しているものとみなす。
 
 

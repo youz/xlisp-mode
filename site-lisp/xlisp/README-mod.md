@@ -2,66 +2,65 @@
 
 
 ## Author
-2009-2010
-  Yousuke Ushiki <citrus.yubeshi@gmail.com>
-2008
-  knenet <kneneglect_std@yahoo.co.jp>
+2009-2010  
+Yousuke Ushiki <citrus.yubeshi@gmail.com>
+
+2008  
+knenet <kneneglect_std@yahoo.co.jp>  
 
 
 ## Copyright
-ƒIƒŠƒWƒiƒ‹”Å‚É€‚¸‚éB(README.txtQÆ)
+ã‚ªãƒªã‚¸ãƒŠãƒ«ç‰ˆã«æº–ãšã‚‹ã€‚(README.txtå‚ç…§)
 
 
 ## History
 
 ### mod-003  2010-10-13
 * (new) xlisp-load-file
-* repl‘¤‚Ìsend-input‚ğ•ÏX
+* replå´ã®send-inputã‚’å¤‰æ›´
 
 
 ### mod-002  2009-06-09
 * xlisp-profile
-** macƒpƒ‰ƒ[ƒ^’Ç‰Á (macroexpand—pƒtƒH[ƒ}ƒbƒg)
-  —á:
-  `:macex "(macroexpand~:[-1~;~] '~A)"  ;; cl—p`
+** macãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿è¿½åŠ  (macroexpandç”¨ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆ)
+  ä¾‹:
+  `:macex "(macroexpand~:[-1~;~] '~A)"  ;; clç”¨`
 
 * (new) xlisp-send-current-form
 * (new) xlisp-macroexpand
-* (new) xlisp-macroexpand-1
+* (new) xlisp-macroexpand-1  
+    ã‚­ãƒ¼ãƒã‚¤ãƒ³ãƒ‰ã¯  
+    [C-c C-c] xlisp-send-current-form  
+    [C-c M-m] xlisp-macroexpand  
+    [C-c C-m] xlisp-macroexpand-1
 
-  ƒL[ƒoƒCƒ“ƒh‚Í
-  [C-c C-c] xlisp-send-current-form
-  [C-c M-m] xlisp-macroexpand
-  [C-c C-m] xlisp-macroexpand-1
 
-
-## mod-001  2009-06-05
-* ƒvƒƒtƒ@ƒCƒ‹‚ğplist‚É
-* (new) *xlisp-mode-hook*
-* ŠeƒRƒ}ƒ“ƒh‚ğexport
-* ƒL[ƒ}ƒbƒv *xlisp-mode-map* ì¬ & ƒoƒCƒ“ƒh•ÏX
-   C-j      xlisp-send-last-sexp
-  [C-c C-e] xlisp-send-last-sexp
-  [C-c C-j] xlisp-send-line
-  [C-c C-r] xlisp-send-region
-  [C-c C-z] xlisp-send-buffer
+### mod-001  2009-06-05
+* ãƒ—ãƒ­ãƒ•ã‚¡ã‚¤ãƒ«ã‚’plistã«
+* (new) `*xlisp-mode-hook*`
+* å„ã‚³ãƒãƒ³ãƒ‰ã‚’export
+* ã‚­ãƒ¼ãƒãƒƒãƒ— `*xlisp-mode-map*` ä½œæˆ & ãƒã‚¤ãƒ³ãƒ‰å¤‰æ›´  
+    C-j      xlisp-send-last-sexp  
+    [C-c C-e] xlisp-send-last-sexp  
+    [C-c C-j] xlisp-send-line  
+    [C-c C-r] xlisp-send-region  
+    [C-c C-z] xlisp-send-buffer
 
 * xlisp-profile
-** (new) auto-modeƒpƒ‰ƒ[ƒ^
-** ƒvƒƒtƒ@ƒCƒ‹‚²‚Æ‚ÉƒƒWƒƒ[ƒ‚[ƒhƒRƒ}ƒ“ƒh‚ğ¶¬
-  —á:
+** (new) auto-modeãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿
+** ãƒ—ãƒ­ãƒ•ã‚¡ã‚¤ãƒ«ã”ã¨ã«ãƒ¡ã‚¸ãƒ£ãƒ¼ãƒ¢ãƒ¼ãƒ‰ã‚³ãƒãƒ³ãƒ‰ã‚’ç”Ÿæˆ  
+    ä¾‹:
 
-    (xlisp-profile :name "Scheme"
-                   :exe "gosh.exe"
-                   :cmd "-i -u pp"
-                   :auto-mode "\\.scm$")
+        (xlisp-profile :name "Scheme"
+                       :exe "gosh.exe"
+                       :cmd "-i -u pp"
+                       :auto-mode "\\.scm$")
 
-  ‚ğ•]‰¿‚·‚é‚ÆƒRƒ}ƒ“ƒh xlisp-scheme-mode ‚ğ’è‹`‚µA“¯‚É
-  *auto-mode-alist*‚É '("\\.scm$" . xlisp-scheme-mode) ‚ğ’Ç‰Á‚·‚é
+    ã‚’è©•ä¾¡ã™ã‚‹ã¨ã‚³ãƒãƒ³ãƒ‰ xlisp-scheme-mode ã‚’å®šç¾©ã—ã€åŒæ™‚ã«
+    `*auto-mode-alist*ã«` `'("\\.scm$" . xlisp-scheme-mode)` ã‚’è¿½åŠ ã™ã‚‹
 
-* buffer-mode‚ğxlisp-mode‚©‚çxlisp-profile‚Å¶¬‚µ‚½ƒVƒ“ƒ{ƒ‹(xlisp-hoge-mode)‚É•ÏX
-
-* (new) xlisp-send-string (xlisp-send-region‚©‚ç•ª—£)
-* (new) xlisp-set-mode   ƒwƒbƒ_‚ÉŠÖŒW‚È‚­ƒ‚[ƒh‚ğ‹­§•ÏX
-* (new) xlisp-set-header ƒwƒbƒ_‚ğ‘}“ü‚µ‚Äxlisp-mode‚ğ“K—p
+* buffer-modeã‚’ `xlisp-mode` ã‹ã‚‰xlisp-profileã§ç”Ÿæˆã—ãŸã‚·ãƒ³ãƒœãƒ« (ex.`xlisp-scheme-mode`) ã«å¤‰æ›´
+* (new) xlisp-send-string (xlisp-send-regionã‹ã‚‰åˆ†é›¢)
+* (new) xlisp-set-mode   ãƒ˜ãƒƒãƒ€ã«é–¢ä¿‚ãªããƒ¢ãƒ¼ãƒ‰ã‚’å¼·åˆ¶å¤‰æ›´
+* (new) xlisp-set-header ãƒ˜ãƒƒãƒ€ã‚’æŒ¿å…¥ã—ã¦xlisp-modeã‚’é©ç”¨
 
