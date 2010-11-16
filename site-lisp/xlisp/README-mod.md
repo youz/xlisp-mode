@@ -21,10 +21,10 @@ knenet <kneneglect_std@yahoo.co.jp>
 
 
 ### mod-002  2009-06-09
-* xlisp-profile
-** macパラメータ追加 (macroexpand用フォーマット)
-  例:
-  `:macex "(macroexpand~:[-1~;~] '~A)"  ;; cl用`
+* xlisp-profileにmacパラメータ追加 (macroexpand用フォーマット)  
+    例:
+
+        :macex "(macroexpand~:[-1~;~] '~A)"  ;; cl用
 
 * (new) xlisp-send-current-form
 * (new) xlisp-macroexpand
