@@ -5,9 +5,7 @@
   (interactive)
   (if (interactive-p)
       (message "xlisp-mode ~A on 2010-10-15" (xlisp-mode-version))
-    "mod-003"))
-
-
+    "mod-004"))
 
 ;; ritual
 (eval-when (:compile-toplevel :load-toplevel :execute)
@@ -33,13 +31,6 @@
    xlisp-set-header
    ))
 
-;; macros
-(eval-when (:compile-toplevel :execute)
-;macro-function
-;macro
-(defmacro or1 (exist otherwise)
-  `(if ,exist ,exist ,otherwise))
-)
 
 (defvar *xlisp-profiles* nil)
 (defvar *xlisp-mode-hook* nil)
@@ -73,12 +64,16 @@
   (when (and (stringp name) (string/= name ""))
     (setq *xlisp-profiles* (delete name *xlisp-profiles* :test 'equal :key 'cadr))
     (let* ((mode-sym (intern (format nil "xlisp-~(~A~)-mode" name)))
+	   (pkgname (format nil "xlisp-~(~A~)" name))
+	   (pkg (or (find-package pkgname)
+		    (make-package pkgname)))
 	   (prf (list :name name :exe exe :cmd cmd :dir dir
 		      :env env :encoding (or encoding *encoding-sjis*)
 		      :hook hook :auto-mode auto-mode
 		      :macex macex
 		      :loadfile loadfile
 		      :mode mode-sym
+		      :package pkg
 		      :run-char (or run-char #\LFD))))
       (push prf *xlisp-profiles*)
       (si:*fset mode-sym
@@ -111,7 +106,7 @@
   (ed:shell-send-input))
 
 (defun xlisp-call-new-proc (&key name exe cmd dir env run-char encoding)
-  (let* ((d (or1 dir (directory-namestring (get-buffer-file-name))))
+  (let* ((d (or dir (directory-namestring (get-buffer-file-name))))
 	 (cmd (format nil "\"~a\" ~a" exe (or cmd "")))
 	 (pbuff (execute-subprocess cmd t (format nil "*~A*" name) env d))
 	 (bproc (buffer-process pbuff)))
@@ -245,6 +240,7 @@
  
   (setq mode-name (getf profile :name)
 	buffer-mode (getf profile :mode)
+	*buffer-package* (package-name (getf profile :package))
 	xlisp-buff-profile profile)
   (make-local-variable '*delete-buffer-hook*)
   (add-hook '*delete-buffer-hook* 'xlisp-show-result)

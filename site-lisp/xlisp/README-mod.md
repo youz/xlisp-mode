@@ -1,15 +1,18 @@
-# xlisp-mode mod version 003
+# xlisp-mode mod version 004
 
 
 ## Author
 Copyright (C) 2008 knenet (<kneneglect_std@yahoo.co.jp>) All rights reserved.  
-Copyright (C) 2009-2010 Yousuke Ushiki (<citrus.yubeshi@gmail.com>) All rights reserved.
+Copyright (C) 2009-2011 Yousuke Ushiki (<citrus.yubeshi@gmail.com>) All rights reserved.
 
 ## License
 オリジナル版に準ずる。(README.txt参照)
 
 
 ## History
+
+### mod-004  2011-05-24
+* モード毎にインデント設定をしてみるテスト
 
 ### mod-003  2010-10-13
 * (new) xlisp-load-file
