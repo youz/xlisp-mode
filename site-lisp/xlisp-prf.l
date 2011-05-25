@@ -82,10 +82,16 @@
 
 (xlisp-define-indent
  "Arc"
- (1 #:let #:afn #:fn #:accum #:w/stdin #:w/appendfile #:w/stdout #:w/uniq #:awhen
-    #:when #:withs #:with #:case #:unless)
- (2 #:rfn #:redef #:defcall #:defset #:mac #:def #:on #:each #:whilet #:w/infile)
- (3 #:for #:down #:loop))
+ (0 #:do #:defs #:w/bars #:thread)
+ (1 #:with #:withs #:fn #:afn #:when #:unless #:while #:until
+    #:atwith #:atwiths #:repeat #:do1 #:case #:aif #:awhen
+    #:accum #:n-of #:summing
+    #:w/uniq #:w/outstring #:w/stdout #:w/stdin #:w/table
+    #:point #:catch)
+ (2 #:let #:def #:mac #:atlet #:defset #:each #:whilet #:caselet #:iflet #:whenlet
+    #:w/infile #:w/outfile #:w/instring #:w/socket #:w/appendfile
+    #:forlen #:on #:defmemo #:trav #:defcall)
+ (3 #:loop #:for #:down #:whiler #:noisy-each))
 
 (xlisp-define-indent
  "Clojure"
