@@ -4,7 +4,7 @@
 (defun xlisp-mode-version ()
   (interactive)
   (if (interactive-p)
-      (message "xlisp-mode ~A on 2010-10-15" (xlisp-mode-version))
+      (message "xlisp-mode ~A on 2011-05-24" (xlisp-mode-version))
     "mod-004"))
 
 ;; ritual
